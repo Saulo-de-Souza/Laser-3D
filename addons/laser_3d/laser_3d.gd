@@ -343,6 +343,10 @@ func get_collision_mask_value(layer_number: int) -> bool:
 	return _ray_cast.get_collision_mask_value(layer_number)
 
 
+func is_laser_visible() -> bool:
+	return _mesh_instance.visible
+
+	
 # --------------------------------------------------------------
 # PRIVATE METHODS
 # --------------------------------------------------------------
