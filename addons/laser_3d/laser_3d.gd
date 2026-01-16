@@ -29,6 +29,14 @@ class_name Laser3D extends Node3D
 
 
 # --------------------------------------------------------------
+# CONSTANTS
+# --------------------------------------------------------------
+const LASER_ALWAYS_VISIBLE: int = 0
+const LASER_VISIBLE_ON_COLLIDE: int = 1
+const LASER_VISIBLE_OFF: int = 2
+
+
+# --------------------------------------------------------------
 # PRIVATE PROPERTIES
 # --------------------------------------------------------------
 var _ray_cast: RayCast3D = RayCast3D.new()
@@ -46,6 +54,8 @@ var _current_collider: Object:
 			collider_changed.emit(_current_collider, value)
 		_current_collider = value
 
+
+enum laser_visible {LASER_ALWAYS_VISIBLE, LASER_VISIBLE_ON_COLLIDE, LASER_VISIBLE_OFF}
 
 # --------------------------------------------------------------
 # SIGNALS
@@ -74,7 +84,7 @@ signal collider_changed(old_collider: Object, new_collider: Object)
 ## - Always Visible: Beam is always rendered[br]
 ## - Visible On Collide: Beam only appears when hitting something[br]
 ## - Off: Beam is never rendered
-@export_enum("Always Visible", "Visible On Collide", "Off") var laser_type_visible: int = 0:
+@export var laser_type_visible: laser_visible = LASER_ALWAYS_VISIBLE:
 	set(value):
 		laser_type_visible = value
 		_mesh_instance.visible = _visual_handle()
@@ -380,13 +390,13 @@ func _visual_handle() -> bool:
 	var is_colliding: bool = _ray_cast.is_colliding()
 
 	match laser_type_visible:
-		0:
+		LASER_ALWAYS_VISIBLE:
 			_cylinder_height(is_colliding and not Engine.is_editor_hint())
 			return true
-		1:
+		LASER_VISIBLE_ON_COLLIDE:
 			_cylinder_height(is_colliding and not Engine.is_editor_hint())
 			return laser_active and is_colliding or Engine.is_editor_hint()
-		2:
+		LASER_VISIBLE_OFF:
 			return false
 		_:
 			return false
