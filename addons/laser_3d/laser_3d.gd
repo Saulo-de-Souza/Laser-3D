@@ -1,5 +1,5 @@
 @tool
-#@icon("res://scenes/laser/icon.svg")
+@icon("res://addons/laser_3d/icon.svg")
 
 ## [b]Laser3D[/b][br]
 ## A ready-to-use 3D laser beam with collision detection.[br]
